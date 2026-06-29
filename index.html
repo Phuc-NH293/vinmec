@@ -1,0 +1,832 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hệ thống Y tế Quốc tế Vinmec | Clone</title>
+    
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="Khám phá dịch vụ y tế tại Bệnh viện Quốc tế Vinmec, cơ sở y tế tiên tiến tại Việt Nam với công nghệ hiện đại và chăm sóc chuyên nghiệp.">
+    <meta property="og:title" content="Hệ thống Y tế Quốc tế Vinmec">
+    <meta property="og:description" content="Khám phá dịch vụ y tế chất lượng cao tại Vinmec.">
+    <meta property="og:type" content="website">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="https://www.vinmec.com/static/uploads/logo_2bd10ad933.svg">
+    
+    <!-- External Icon library & Fonts -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Core Stylesheet -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- ==========================================
+       Header & Navigation
+       ========================================== -->
+    <header>
+        <!-- Top Bar for desktop -->
+        <div class="top-bar">
+            <div class="container top-bar-container">
+                <div class="top-bar-left">
+                    <span><i class="fa-solid fa-phone-volume"></i> Hotline CSKH: 1900 232389</span>
+                    <span><i class="fa-solid fa-hospital"></i> 10 Bệnh viện & Phòng khám toàn quốc</span>
+                </div>
+                <div class="top-bar-right">
+                    <a href="#" onclick="openHotlineModal()"><i class="fa-solid fa-user-doctor"></i> Tìm Bác Sĩ</a>
+                    <a href="#cskh"><i class="fa-solid fa-headset"></i> Chăm Sóc Khách Hàng</a>
+                    <a href="#news"><i class="fa-solid fa-newspaper"></i> Tin Tức</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Navigation Bar -->
+        <nav class="container main-nav">
+            <!-- Mobile Menu Toggle Button -->
+            <button class="mobile-nav-toggle" onclick="toggleMobileDrawer()" aria-label="Toggle Navigation">
+                <i class="fa-solid fa-bars"></i>
+            </button>
+
+            <!-- Brand Logo -->
+            <div class="logo">
+                <a href="#">
+                    <!-- SVG vector equivalent of Vinmec logo -->
+                    <svg height="50" viewBox="0 0 320 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <!-- Cross/hospital symbol -->
+                        <rect x="15" y="15" width="50" height="50" rx="12" fill="#0076c0"/>
+                        <path d="M40 25V55M25 40H55" stroke="white" stroke-width="8" stroke-linecap="round"/>
+                        <!-- Red heart icon accent -->
+                        <path d="M45 42C48 38 53 38 55 42C57 46 51 52 45 55C39 52 33 46 35 42C37 38 42 38 45 42Z" fill="#ff4d4f"/>
+                        <!-- Text Brand Name -->
+                        <text x="80" y="46" font-family="'Outfit', sans-serif" font-weight="800" font-size="28" fill="#0068ab">VINMEC</text>
+                        <text x="80" y="63" font-family="'Inter', sans-serif" font-weight="600" font-size="12" fill="#51be9d" letter-spacing="1">INTERNATIONAL HOSPITAL</text>
+                    </svg>
+                </a>
+            </div>
+
+            <!-- Central Search Bar -->
+            <div class="search-bar-wrapper">
+                <div class="search-input-container">
+                    <input type="text" id="search-input" placeholder="Tìm chuyên khoa, bác sĩ, bệnh..." autocomplete="off">
+                    <button class="search-submit-btn" onclick="triggerSearch()" aria-label="Submit Search">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                    </button>
+                </div>
+                <!-- Interactive Suggestions Dropdown -->
+                <div class="dropdown-container" id="suggestions-dropdown">
+                    <!-- Javascript populated -->
+                </div>
+            </div>
+
+            <!-- Mobile Search Toggle Button -->
+            <button class="mobile-search-toggle" onclick="toggleMobileSearch()" aria-label="Search">
+                <i class="fa-solid fa-magnifying-glass"></i>
+            </button>
+
+            <!-- Right Actions Area -->
+            <div class="nav-actions">
+                <!-- Appointment CTA -->
+                <a href="#booking" class="booking-btn-main">
+                    <i class="fa-regular fa-calendar-check"></i>
+                    <span>Đặt Lịch Khám</span>
+                </a>
+
+                <!-- Language Selector -->
+                <div class="lang-switch-wrapper">
+                    <img class="lang-flag" src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/21/Flag_of_Vietnam.svg/2000px-Flag_of_Vietnam.svg.png" alt="Vietnam Flag" id="current-lang-flag">
+                    <select id="lang-select" onchange="changeLanguage(this.value)">
+                        <option value="vi" selected>Tiếng Việt</option>
+                        <option value="en">English</option>
+                    </select>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Desktop Navigation Categories -->
+        <div class="menu-bar">
+            <div class="container">
+                <ul class="menu-list">
+                    <li class="menu-item">
+                        <a href="#chuyen-khoa" class="menu-link">Chuyên khoa <i class="fa-solid fa-chevron-down" style="font-size:0.75rem;"></i></a>
+                        <!-- Mega Menu Dropdown -->
+                        <div class="dropdown-menu">
+                            <div class="dropdown-col">
+                                <div class="dropdown-col-title">Trung tâm Chuyên sâu</div>
+                                <ul class="dropdown-list">
+                                    <li><a href="#">Trung tâm Tim mạch</a></li>
+                                    <li><a href="#">Trung tâm Ung bướu</a></li>
+                                    <li><a href="#">Trung tâm Hỗ trợ sinh sản</a></li>
+                                    <li><a href="#">Trung tâm Nhi khoa</a></li>
+                                    <li><a href="#">Trung tâm Sức khỏe phụ nữ</a></li>
+                                </ul>
+                            </div>
+                            <div class="dropdown-col">
+                                <div class="dropdown-col-title">Khoa Lâm sàng</div>
+                                <ul class="dropdown-list">
+                                    <li><a href="#">Khoa Cấp cứu & Hồi sức</a></li>
+                                    <li><a href="#">Khoa Cơ xương khớp & Y học thể thao</a></li>
+                                    <li><a href="#">Khoa Tiêu hóa - Gan mật</a></li>
+                                    <li><a href="#">Khoa Thần kinh & Đột quỵ</a></li>
+                                    <li><a href="#">Khoa Răng Hàm Mặt - Thẩm mỹ</a></li>
+                                </ul>
+                            </div>
+                            <div class="dropdown-col">
+                                <div class="dropdown-col-title">Dịch vụ Đặc biệt</div>
+                                <ul class="dropdown-list">
+                                    <li><a href="#">Trung tâm Y học Tái tạo & Trị liệu Tế bào</a></li>
+                                    <li><a href="#">Giải pháp Công nghệ Gen</a></li>
+                                    <li><a href="#">Trung tâm Vaccine & Tiêm chủng</a></li>
+                                    <li><a href="#">Khám sức khỏe tổng quát chất lượng cao</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="menu-item">
+                        <a href="#huong-dan" class="menu-link">Hướng dẫn khách hàng <i class="fa-solid fa-chevron-down" style="font-size:0.75rem;"></i></a>
+                        <div class="dropdown-menu" style="min-width: 250px;">
+                            <div class="dropdown-col">
+                                <ul class="dropdown-list">
+                                    <li><a href="#" onclick="openHotlineModal()"><i class="fa-solid fa-phone"></i> Đường dây nóng bệnh viện</a></li>
+                                    <li><a href="#booking"><i class="fa-regular fa-calendar-days"></i> Đăng ký lịch khám trực tuyến</a></li>
+                                    <li><a href="#clinics"><i class="fa-solid fa-map-location-dot"></i> Bản đồ chỉ đường cơ sở</a></li>
+                                    <li><a href="#"><i class="fa-solid fa-shield-halved"></i> Hướng dẫn thanh toán bảo hiểm</a></li>
+                                    <li><a href="#"><i class="fa-solid fa-pills"></i> Tra cứu danh mục thuốc an toàn</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="menu-item">
+                        <a href="#phat-trien" class="menu-link">Phát triển bền vững</a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="#about" class="menu-link">Về Vinmec <i class="fa-solid fa-chevron-down" style="font-size:0.75rem;"></i></a>
+                        <div class="dropdown-menu" style="min-width: 240px;">
+                            <div class="dropdown-col">
+                                <ul class="dropdown-list">
+                                    <li><a href="#">Tầm nhìn và Sứ mệnh</a></li>
+                                    <li><a href="#">Thành tựu và Giải thưởng</a></li>
+                                    <li><a href="#">Hệ thống quản lý chất lượng JCI</a></li>
+                                    <li><a href="#">Đối tác Y tế Toàn cầu</a></li>
+                                    <li><a href="#">Cơ hội việc làm tại Vinmec</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="menu-item">
+                        <a href="#chuyen-trang" class="menu-link">Chuyên trang Sức khỏe <i class="fa-solid fa-chevron-down" style="font-size:0.75rem;"></i></a>
+                        <div class="dropdown-menu">
+                            <div class="dropdown-col">
+                                <div class="dropdown-col-title">Tra Cứu Thông Tin</div>
+                                <ul class="dropdown-list">
+                                    <li><a href="#">Tra cứu bệnh lý từ A-Z</a></li>
+                                    <li><a href="#">Cẩm nang cơ thể & Sinh học</a></li>
+                                    <li><a href="#">Tư vấn dinh dưỡng an toàn</a></li>
+                                    <li><a href="#">Mẹ bầu & Chăm sóc trẻ sơ sinh</a></li>
+                                </ul>
+                            </div>
+                            <div class="dropdown-col">
+                                <div class="dropdown-col-title">Hỏi Đáp Bác Sĩ</div>
+                                <ul class="dropdown-list">
+                                    <li><a href="#">Gửi câu hỏi trực tuyến</a></li>
+                                    <li><a href="#">Video hướng dẫn y học</a></li>
+                                    <li><a href="#">Góc chia sẻ từ bệnh nhân</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </header>
+
+    <!-- Mobile Drawer Sidebar (Navigation menu on phone view) -->
+    <div class="mobile-drawer" id="mobile-drawer">
+        <div class="mobile-drawer-header">
+            <h3>Menu Dịch Vụ</h3>
+            <button class="mobile-drawer-close" onclick="toggleMobileDrawer()">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+        </div>
+        <ul class="mobile-menu-list">
+            <li>
+                <div class="mobile-menu-title">Chuyên Khoa</div>
+                <ul class="mobile-sub-menu">
+                    <li><a href="#">Trung tâm Tim mạch</a></li>
+                    <li><a href="#">Trung tâm Ung bướu</a></li>
+                    <li><a href="#">Trung tâm Hỗ trợ sinh sản</a></li>
+                    <li><a href="#">Trung tâm Nhi khoa</a></li>
+                    <li><a href="#">Khoa Cấp cứu hồi sức</a></li>
+                </ul>
+            </li>
+            <li>
+                <div class="mobile-menu-title">Hướng Dẫn Khách Hàng</div>
+                <ul class="mobile-sub-menu">
+                    <li><a href="#" onclick="toggleMobileDrawer(); openHotlineModal()"><i class="fa-solid fa-phone"></i> Hotline Liên Hệ</a></li>
+                    <li><a href="#booking" onclick="toggleMobileDrawer()"><i class="fa-regular fa-calendar-check"></i> Đăng Ký Khám</a></li>
+                    <li><a href="#clinics" onclick="toggleMobileDrawer()"><i class="fa-solid fa-location-dot"></i> Bản đồ cơ sở</a></li>
+                    <li><a href="#"><i class="fa-solid fa-shield-halved"></i> Dịch vụ bảo hiểm</a></li>
+                </ul>
+            </li>
+            <li>
+                <div class="mobile-menu-title">Về Vinmec</div>
+                <ul class="mobile-sub-menu">
+                    <li><a href="#">Tầm nhìn sứ mệnh</a></li>
+                    <li><a href="#">Thành tựu giải thưởng</a></li>
+                    <li><a href="#">Hợp tác quốc tế</a></li>
+                    <li><a href="#">Tuyển dụng</a></li>
+                </ul>
+            </li>
+            <li>
+                <div class="mobile-menu-title"><a href="#phat-trien" style="color:var(--primary-blue);" onclick="toggleMobileDrawer()">Phát Triển Bền Vững</a></div>
+            </li>
+        </ul>
+    </div>
+
+    <!-- ==========================================
+       Hero Slider Section
+       ========================================== -->
+    <section class="hero-slider-section">
+        <div class="slider-container" id="hero-slider">
+            <!-- Slide 1 -->
+            <div class="slide active">
+                <img class="slide-img-pc" src="assets/images/banners/banner_main.jpg" alt="Vinmec Banners - Chăm Sóc Sức Khỏe">
+                <img class="slide-img-mb" src="assets/images/banners/banner_main.jpg" alt="M_Vinmec Banners">
+            </div>
+            <!-- Slide 2 -->
+            <div class="slide">
+                <img class="slide-img-pc" src="assets/images/banners/banner_maternity.jpg" alt="Vinmec Banners - Sản Phụ Khoa">
+                <img class="slide-img-mb" src="assets/images/banners/banner_maternity.jpg" alt="M_Vinmec Banners">
+            </div>
+            <!-- Slide 3 -->
+            <div class="slide">
+                <img class="slide-img-pc" src="assets/images/banners/banner_cardiology.jpg" alt="Vinmec Banners - Tim Mạch Chuyên Sâu">
+                <img class="slide-img-mb" src="assets/images/banners/banner_cardiology.jpg" alt="M_Vinmec Banners">
+            </div>
+        </div>
+
+        <!-- Text Overlay (Vinmec Tagline) -->
+        <div class="hero-overlay">
+            <div class="container">
+                <div class="hero-text-content">
+                    <h1 class="hero-title">Chăm sóc bằng tài năng, y đức và sự thấu cảm</h1>
+                    <p class="hero-desc">Vinmec tự hào quy tụ đội ngũ chuyên gia hàng đầu và trang thiết bị tân tiến nhất thế giới, cam kết mang tới giải pháp sức khỏe toàn diện.</p>
+                    <a href="#about" class="viewmore-button hero-btn">Khám phá chi tiết</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide Dots -->
+        <div class="slider-dots">
+            <span class="dot active" onclick="currentSlide(0)"></span>
+            <span class="dot" onclick="currentSlide(1)"></span>
+            <span class="dot" onclick="currentSlide(2)"></span>
+        </div>
+    </section>
+
+    <!-- ==========================================
+       Quick CTA Floating Panel Section
+       ========================================== -->
+    <section class="container cta-panel-section">
+        <div class="cta-grid">
+            <!-- Box 1: Call Hotline -->
+            <div class="cta-card" onclick="openHotlineModal()">
+                <div class="cta-icon-wrapper">
+                    <i class="fa-solid fa-phone-flip"></i>
+                </div>
+                <div class="cta-info-block">
+                    <h3 class="cta-card-title">Gọi tổng đài</h3>
+                    <p class="cta-card-desc">Tư vấn, hướng dẫn quy trình khám và giải đáp mọi thắc mắc của bạn.</p>
+                </div>
+            </div>
+
+            <!-- Box 2: Appointment booking -->
+            <a href="#booking" class="cta-card">
+                <div class="cta-icon-wrapper">
+                    <i class="fa-solid fa-calendar-days"></i>
+                </div>
+                <div class="cta-info-block">
+                    <h3 class="cta-card-title">Đặt Lịch Hẹn</h3>
+                    <p class="cta-card-desc">Chủ động lựa chọn khung giờ, địa điểm khám và bác sĩ theo yêu cầu.</p>
+                </div>
+            </a>
+
+            <!-- Box 3: Find doctor -->
+            <div class="cta-card" onclick="focusSearch()">
+                <div class="cta-icon-wrapper">
+                    <i class="fa-solid fa-user-doctor"></i>
+                </div>
+                <div class="cta-info-block">
+                    <h3 class="cta-card-title">Tìm bác sĩ</h3>
+                    <p class="cta-card-desc">Tra cứu nhanh hồ sơ năng lực, thành tựu của các chuyên gia đầu ngành.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==========================================
+       "Tại sao nên chọn Vinmec?" Section
+       ========================================== -->
+    <section class="section-padding container" id="about">
+        <div class="sect-head">
+            <h2 class="title-line">Tại sao nên chọn Vinmec?</h2>
+            <p class="section-desc">Chúng tôi không chỉ chữa trị bệnh lý, mà hướng tới đồng hành cùng sự khỏe mạnh trọn vẹn suốt đời của gia đình bạn.</p>
+        </div>
+
+        <div class="why-us-grid">
+            <!-- Left Side Image -->
+            <div class="why-us-image-block">
+                <img src="assets/images/why_us_doctor.jpg" alt="Vinmec medical team - Professional Care">
+            </div>
+
+            <!-- Right Side Features Grid -->
+            <div class="why-us-features">
+                <!-- Item 1 -->
+                <div class="why-us-card">
+                    <div class="why-us-icon">
+                        <i class="fa-solid fa-user-tie"></i>
+                    </div>
+                    <h3 class="why-us-card-title">Chuyên gia hàng đầu</h3>
+                    <p class="why-us-card-desc">Vinmec quy tụ đội ngũ bác sĩ, chuyên gia đầu ngành trong và ngoài nước, tận tâm, có chuyên môn cao và thấu hiểu tâm lý bệnh nhân.</p>
+                </div>
+
+                <!-- Item 2 -->
+                <div class="why-us-card">
+                    <div class="why-us-icon">
+                        <i class="fa-solid fa-globe"></i>
+                    </div>
+                    <h3 class="why-us-card-title">Chất lượng quốc tế</h3>
+                    <p class="why-us-card-desc">Hệ thống bệnh viện đạt chứng nhận JCI (Joint Commission International) - tiêu chuẩn an toàn người bệnh nghiêm ngặt nhất hành tinh.</p>
+                </div>
+
+                <!-- Item 3 -->
+                <div class="why-us-card">
+                    <div class="why-us-icon">
+                        <i class="fa-solid fa-microscope"></i>
+                    </div>
+                    <h3 class="why-us-card-title">Công nghệ tiên tiến</h3>
+                    <p class="why-us-card-desc">Trang bị các hệ thống chẩn đoán hình ảnh và phòng mổ thông minh, máy gia tốc xạ trị thế hệ mới nhất hỗ trợ hiệu quả tối đa.</p>
+                </div>
+
+                <!-- Item 4 -->
+                <div class="why-us-card">
+                    <div class="why-us-icon">
+                        <i class="fa-solid fa-lightbulb"></i>
+                    </div>
+                    <h3 class="why-us-card-title">Nghiên cứu & Đổi mới</h3>
+                    <p class="why-us-card-desc">Liên tục phát triển y học cá thể hóa thông qua trung tâm nghiên cứu gen, liệu pháp tế bào gốc và các nghiên cứu y khoa học thuật quốc tế.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==========================================
+       "Chứng nhận và Giải thưởng" Section
+       ========================================== -->
+    <section class="section-padding awards-section">
+        <div class="container awards-grid">
+            <!-- Left Info -->
+            <div class="awards-left">
+                <h2 class="title-line">Chứng nhận và giải thưởng</h2>
+                <p class="section-desc" style="margin-top:20px;">Hệ thống Y tế Vinmec tự hào được các tổ chức khoa học và quản lý y tế danh giá hàng đầu thế giới vinh danh.</p>
+                <a href="#" class="viewmore-button" style="margin-top: 10px;">Xem tất cả giải thưởng</a>
+            </div>
+
+            <!-- Right Slider Grid of Badges -->
+            <div class="awards-carousel-wrapper">
+                <div class="awards-carousel-track" id="awards-track">
+                    <!-- JCI Card -->
+                    <div class="award-card">
+                        <svg width="80" height="80" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="50" cy="50" r="45" fill="#f0a500" opacity="0.1"/>
+                            <circle cx="50" cy="50" r="40" stroke="#f0a500" stroke-width="2"/>
+                            <text x="50" y="45" font-family="'Outfit', sans-serif" font-weight="800" font-size="20" fill="#f0a500" text-anchor="middle">JCI</text>
+                            <text x="50" y="65" font-family="'Inter', sans-serif" font-weight="600" font-size="8" fill="#555" text-anchor="middle">ACCREDITED</text>
+                            <path d="M35 50L45 60L65 40" stroke="#f0a500" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </div>
+                    <!-- CAP Card -->
+                    <div class="award-card">
+                        <svg width="80" height="80" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <rect x="10" y="10" width="80" height="80" rx="12" fill="#0076c0" opacity="0.1"/>
+                            <rect x="15" y="15" width="70" height="70" rx="8" stroke="#0076c0" stroke-width="2"/>
+                            <text x="50" y="48" font-family="'Outfit', sans-serif" font-weight="800" font-size="22" fill="#0076c0" text-anchor="middle">CAP</text>
+                            <text x="50" y="68" font-family="'Inter', sans-serif" font-weight="600" font-size="7" fill="#555" text-anchor="middle">PATHOLOGISTS</text>
+                        </svg>
+                    </div>
+                    <!-- ACC Card -->
+                    <div class="award-card">
+                        <svg width="80" height="80" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="50" cy="50" r="45" fill="#e53e3e" opacity="0.1"/>
+                            <path d="M50 80C50 80 80 55 80 35C80 20 65 15 50 30C35 15 20 20 20 35C20 55 50 80 50 80Z" stroke="#e53e3e" stroke-width="2"/>
+                            <text x="50" y="48" font-family="'Outfit', sans-serif" font-weight="800" font-size="18" fill="#e53e3e" text-anchor="middle">ACC</text>
+                            <text x="50" y="62" font-family="'Inter', sans-serif" font-weight="500" font-size="6" fill="#333" text-anchor="middle">CARDIOLOGY</text>
+                        </svg>
+                    </div>
+                    <!-- AABB Card -->
+                    <div class="award-card">
+                        <svg width="80" height="80" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="50" cy="50" r="45" fill="#319795" opacity="0.1"/>
+                            <path d="M30 40H70M30 60H70" stroke="#319795" stroke-width="4" stroke-linecap="round"/>
+                            <text x="50" y="52" font-family="'Outfit', sans-serif" font-weight="800" font-size="16" fill="#319795" text-anchor="middle">AABB</text>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==========================================
+       "Hệ thống phòng khám và trung tâm" Section
+       ========================================== -->
+    <section class="section-padding container" id="clinics">
+        <div class="sect-head">
+            <h2 class="title-line">Hệ thống cơ sở của chúng tôi</h2>
+            <p class="section-desc">Vinmec hiện sở hữu hệ thống y tế trải dài từ Bắc vào Nam, tọa lạc tại các trung tâm đô thị lớn sầm uất nhất cả nước.</p>
+        </div>
+
+        <div class="clinics-layout">
+            <!-- Left Big Photo Showcase -->
+            <div class="clinic-large-showcase">
+                <div class="clinic-large-img-container">
+                    <img class="clinic-large-img" id="showcase-img" src="assets/images/clinics/clinic_times_city.jpg" alt="Vinmec Times City Hospital Exterior">
+                </div>
+                <div class="clinic-large-info">
+                    <h3 class="clinic-large-title" id="showcase-name">Bệnh viện Đa khoa Quốc tế Vinmec Times City</h3>
+                    <p class="clinic-large-desc" id="showcase-desc">Bệnh viện đa khoa đầu tiên của hệ thống đạt chứng nhận JCI danh giá. Tọa lạc tại khu đô thị Times City Hà Nội với quy mô hơn 500 giường bệnh chuyên sâu.</p>
+                </div>
+            </div>
+
+            <!-- Right list picker -->
+            <div class="clinic-list-picker">
+                <!-- Item 1 -->
+                <div class="clinic-picker-item active" onclick="switchClinic(0)">
+                    <img class="clinic-picker-thumb" src="assets/images/clinics/clinic_times_city.jpg" alt="Times city preview">
+                    <span class="clinic-picker-name">Vinmec Times City (Hà Nội)</span>
+                </div>
+                <!-- Item 2 -->
+                <div class="clinic-picker-item" onclick="switchClinic(1)">
+                    <img class="clinic-picker-thumb" src="assets/images/banners/banner_maternity.jpg" alt="Central park preview">
+                    <span class="clinic-picker-name">Vinmec Central Park (TP. HCM)</span>
+                </div>
+                <!-- Item 3 -->
+                <div class="clinic-picker-item" onclick="switchClinic(2)">
+                    <img class="clinic-picker-thumb" src="assets/images/banners/banner_cardiology.jpg" alt="Smart city preview">
+                    <span class="clinic-picker-name">Vinmec Smart City (Hà Nội)</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==========================================
+       Booking Form Section (Booking Widget)
+       ========================================== -->
+    <section class="section-padding" id="booking" style="background-color: var(--bg-white);">
+        <div class="container" style="max-width: 800px;">
+            <div class="sect-head text-center">
+                <h2 class="title-line" style="display:block; text-align:center;">Đặt lịch khám trực tuyến</h2>
+                <p class="section-desc" style="margin: 20px auto 40px;">Chỉ mất 1 phút để đăng ký. Hệ thống sẽ tự động đề xuất lịch trống phù hợp nhất với vị trí địa lý của bạn.</p>
+            </div>
+
+            <!-- Local Detection Info banner (WOW feature) -->
+            <div id="location-banner" style="background: rgba(0, 118, 192, 0.04); border: 1px solid rgba(0, 118, 192, 0.1); border-radius: 12px; padding: 15px 20px; margin-bottom: 30px; display: flex; align-items: center; justify-content: space-between; gap: 15px;">
+                <div style="display:flex; align-items:center; gap:12px;">
+                    <i class="fa-solid fa-location-crosshairs" style="font-size: 1.5rem; color:var(--primary-blue);"></i>
+                    <div>
+                        <div style="font-weight:700; color:#2d3748;" id="detected-hospital-title">Đang xác định cơ sở gần bạn nhất...</div>
+                        <div style="font-size:0.85rem; color:var(--text-muted);" id="detected-distance-desc">Vui lòng cấp quyền vị trí để tự động phát hiện bệnh viện gần nhất.</div>
+                    </div>
+                </div>
+                <button onclick="requestUserLocation()" style="background:var(--primary-blue); color:#fff; font-size:0.8rem; font-weight:600; padding:6px 14px; border-radius:20px;">Dò tìm lại</button>
+            </div>
+
+            <!-- Main Booking Form -->
+            <form id="booking-form" onsubmit="handleBooking(event)" style="display:grid; grid-template-columns: repeat(2, 1fr); gap: 20px;">
+                <!-- Full name -->
+                <div>
+                    <label style="display:block; font-size:0.9rem; font-weight:600; margin-bottom:6px; color:#2d3748;">Họ và tên bệnh nhân *</label>
+                    <input type="text" id="booking-name" required placeholder="Nguyễn Văn A" style="width:100%; padding:12px; border:1px solid var(--border-color); border-radius:8px; background:#f8fafc;">
+                </div>
+                <!-- Phone -->
+                <div>
+                    <label style="display:block; font-size:0.9rem; font-weight:600; margin-bottom:6px; color:#2d3748;">Số điện thoại liên hệ *</label>
+                    <input type="tel" id="booking-phone" required placeholder="0901234567" style="width:100%; padding:12px; border:1px solid var(--border-color); border-radius:8px; background:#f8fafc;">
+                </div>
+                <!-- Hospital location picker -->
+                <div>
+                    <label style="display:block; font-size:0.9rem; font-weight:600; margin-bottom:6px; color:#2d3748;">Chọn bệnh viện khám *</label>
+                    <select id="booking-hospital" style="width:100%; padding:12px; border:1px solid var(--border-color); border-radius:8px; background:#f8fafc;">
+                        <option value="Times City">Vinmec Times City (Hà Nội)</option>
+                        <option value="Central Park">Vinmec Central Park (TP. HCM)</option>
+                        <option value="Smart City">Vinmec Smart City (Hà Nội)</option>
+                        <option value="Da Nang">Vinmec Đà Nẵng</option>
+                        <option value="Nha Trang">Vinmec Nha Trang</option>
+                        <option value="Hai Phong">Vinmec Hải Phòng</option>
+                        <option value="Ha Long">Vinmec Hạ Long</option>
+                        <option value="Phu Quoc">Vinmec Phú Quốc</option>
+                        <option value="Can Tho">Vinmec Cần Thơ</option>
+                        <option value="Ocean Park 2">Vinmec Ocean Park 2</option>
+                    </select>
+                </div>
+                <!-- Specialist dropdown -->
+                <div>
+                    <label style="display:block; font-size:0.9rem; font-weight:600; margin-bottom:6px; color:#2d3748;">Chuyên khoa cần khám *</label>
+                    <select id="booking-specialist" style="width:100%; padding:12px; border:1px solid var(--border-color); border-radius:8px; background:#f8fafc;">
+                        <option value="Tim mach">Trung tâm Tim mạch</option>
+                        <option value="Ung buou">Trung tâm Ung bướu</option>
+                        <option value="Nhi khoa">Trung tâm Nhi khoa</option>
+                        <option value="Sản phụ khoa">Trung tâm Sức khỏe phụ nữ (Sản phụ khoa)</option>
+                        <option value="Cấp cứu">Khoa Cấp cứu & Can thiệp</option>
+                        <option value="Cơ xương khớp">Khoa Cơ xương khớp & Chấn thương chỉnh hình</option>
+                    </select>
+                </div>
+                <!-- Preferred Date -->
+                <div>
+                    <label style="display:block; font-size:0.9rem; font-weight:600; margin-bottom:6px; color:#2d3748;">Chọn ngày khám dự kiến *</label>
+                    <input type="date" id="booking-date" required style="width:100%; padding:12px; border:1px solid var(--border-color); border-radius:8px; background:#f8fafc;">
+                </div>
+                <!-- Note / Message -->
+                <div style="grid-column: span 2;">
+                    <label style="display:block; font-size:0.9rem; font-weight:600; margin-bottom:6px; color:#2d3748;">Ghi chú triệu chứng hoặc bác sĩ mong muốn khám</label>
+                    <textarea id="booking-message" rows="3" placeholder="Ví dụ: Đau tức vùng ngực trái khi gắng sức..." style="width:100%; padding:12px; border:1px solid var(--border-color); border-radius:8px; background:#f8fafc; font-family:inherit;" oninput="updateBookingRecommendation()"></textarea>
+                </div>
+                <!-- Dynamic recommendation card -->
+                <div id="booking-recommendation" style="grid-column: span 2; display: none; background: rgba(81, 190, 157, 0.08); border: 1px solid rgba(81, 190, 157, 0.2); border-radius: 12px; padding: 15px; margin-top: 5px; animation: fadeInUp 0.3s ease;">
+                    <!-- Filled dynamically via script.js -->
+                </div>
+                <!-- Submit -->
+                <div style="grid-column: span 2; text-align:center; margin-top:10px;">
+                    <button type="submit" class="viewmore-button" style="width:250px; border-radius:8px;">Gửi yêu cầu đăng ký</button>
+                </div>
+            </form>
+        </div>
+    </section>
+
+    <!-- ==========================================
+       "Đối tác của chúng tôi" Logo Marquee Section
+       ========================================== -->
+    <section class="partner-section">
+        <div class="container">
+            <h3 class="text-center" style="font-family:var(--font-heading); font-size:1.25rem; font-weight:700; color:var(--text-muted); margin-bottom:30px;">ĐỐI TÁC Y TẾ CHIẾN LƯỢC TOÀN CẦU</h3>
+            <div class="partner-marquee-container">
+                <div class="partner-marquee-track">
+                    <!-- Copy 1 of logos -->
+                    <span class="partner-logo-box"><strong style="font-size:1.3rem; color:#888;">Cleveland Clinic</strong></span>
+                    <span class="partner-logo-box"><strong style="font-size:1.3rem; color:#888;">GE Healthcare</strong></span>
+                    <span class="partner-logo-box"><strong style="font-size:1.3rem; color:#888;">AstraZeneca</strong></span>
+                    <span class="partner-logo-box"><strong style="font-size:1.3rem; color:#888;">Roche Diagnostics</strong></span>
+                    <span class="partner-logo-box"><strong style="font-size:1.3rem; color:#888;">Sydney University</strong></span>
+                    <!-- Copy 2 of logos (for infinite seamless loop) -->
+                    <span class="partner-logo-box"><strong style="font-size:1.3rem; color:#888;">Cleveland Clinic</strong></span>
+                    <span class="partner-logo-box"><strong style="font-size:1.3rem; color:#888;">GE Healthcare</strong></span>
+                    <span class="partner-logo-box"><strong style="font-size:1.3rem; color:#888;">AstraZeneca</strong></span>
+                    <span class="partner-logo-box"><strong style="font-size:1.3rem; color:#888;">Roche Diagnostics</strong></span>
+                    <span class="partner-logo-box"><strong style="font-size:1.3rem; color:#888;">Sydney University</strong></span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==========================================
+       Footer Section
+       ========================================== -->
+    <footer>
+        <div class="container footer-top">
+            <div class="footer-grid">
+                <!-- Column 1: System links -->
+                <div>
+                    <h4 class="footer-col-title">Hệ thống Vinmec</h4>
+                    <ul class="footer-links">
+                        <li><a href="#">Tầm nhìn & sứ mệnh</a></li>
+                        <li><a href="#clinics">Hệ thống cơ sở y tế</a></li>
+                        <li><a href="#" onclick="openHotlineModal()">Tìm bác sĩ điều trị</a></li>
+                        <li><a href="#">Cơ hội hợp tác nghề nghiệp</a></li>
+                        <li><a href="#">Bản quyền thương hiệu</a></li>
+                    </ul>
+                </div>
+                <!-- Column 2: Service links -->
+                <div>
+                    <h4 class="footer-col-title">Dịch vụ lâm sàng</h4>
+                    <ul class="footer-links">
+                        <li><a href="#">Gói khám sức khỏe định kỳ</a></li>
+                        <li><a href="#">Gói bảo hiểm sức khỏe ưu đãi</a></li>
+                        <li><a href="#booking">Đặt lịch hẹn trực tuyến</a></li>
+                        <li><a href="#">Dịch vụ cấp cứu 24/7</a></li>
+                        <li><a href="#">Tư vấn thẻ đặc quyền</a></li>
+                    </ul>
+                </div>
+                <!-- Column 3: App Download -->
+                <div>
+                    <h4 class="footer-col-title">Ứng dụng MyVinmec</h4>
+                    <div class="qr-block">
+                        <p style="font-size:0.8rem; color:#a0aec0;">Tải app MyVinmec để đặt lịch nhanh, theo dõi lịch sử khám bệnh và hồ sơ sức khỏe gia đình.</p>
+                        <!-- SVG equivalent QR design -->
+                        <svg class="app-qr-img" width="120" height="120" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <rect width="100" height="100" fill="white"/>
+                            <!-- Outer anchor squares -->
+                            <rect x="5" y="5" width="25" height="25" fill="#121824"/>
+                            <rect x="10" y="10" width="15" height="15" fill="white"/>
+                            <rect x="12" y="12" width="11" height="11" fill="#121824"/>
+
+                            <rect x="70" y="5" width="25" height="25" fill="#121824"/>
+                            <rect x="75" y="10" width="15" height="15" fill="white"/>
+                            <rect x="77" y="12" width="11" height="11" fill="#121824"/>
+
+                            <rect x="5" y="70" width="25" height="25" fill="#121824"/>
+                            <rect x="10" y="75" width="15" height="15" fill="white"/>
+                            <rect x="12" y="77" width="11" height="11" fill="#121824"/>
+                            
+                            <!-- Fake QR code random grid patterns -->
+                            <rect x="40" y="10" width="10" height="10" fill="#121824"/>
+                            <rect x="55" y="15" width="8" height="20" fill="#121824"/>
+                            <rect x="40" y="30" width="25" height="10" fill="#121824"/>
+                            <rect x="10" y="45" width="12" height="15" fill="#121824"/>
+                            <rect x="30" y="45" width="20" height="20" fill="#121824"/>
+                            <rect x="55" y="45" width="30" height="8" fill="#121824"/>
+                            <rect x="75" y="60" width="15" height="25" fill="#121824"/>
+                            <rect x="35" y="70" width="10" height="15" fill="#121824"/>
+                            <rect x="50" y="75" width="18" height="18" fill="#121824"/>
+                        </svg>
+                    </div>
+                </div>
+                <!-- Column 4: Follow and badging -->
+                <div>
+                    <h4 class="footer-col-title">Theo dõi chúng tôi</h4>
+                    <p style="font-size:0.8rem; color:#a0aec0;">Cập nhật thông tin y tế hữu ích nhất từ các chuyên gia.</p>
+                    <div class="social-links">
+                        <a href="https://www.youtube.com/user/VinmecHospital" target="_blank" class="social-btn" aria-label="Vinmec Youtube"><i class="fa-brands fa-youtube"></i></a>
+                        <a href="https://www.facebook.com/Vinmec/" target="_blank" class="social-btn" aria-label="Vinmec Facebook"><i class="fa-brands fa-facebook-f"></i></a>
+                    </div>
+                    <div class="accreditations">
+                        <img class="accreditation-logo" src="https://vinmec-prod.s3.amazonaws.com/uploads/logosalenoti_d40a0c287e.svg" alt="Bộ công thương" onerror="this.src='https://upload.wikimedia.org/wikipedia/commons/e/e1/Logo_b%E1%BB%99_c%C3%B4ng_th%C6%B0%C6%A1ng.png'">
+                        <img class="accreditation-logo" src="https://images.dmca.com/Badges/dmca_premi_badge_4.png?ID=1a2cf8db-44e0-45a0-a35d-eb63c81dfc1f" alt="DMCA">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <div class="container footer-bottom-container">
+                <div>Bản quyền © 2026 thuộc về Công ty Cổ phần Bệnh viện Đa khoa Quốc tế Vinmec. Tất cả quyền lợi được bảo hộ.</div>
+                <div class="footer-legal-links">
+                    <a href="#">Chính sách bảo mật dữ liệu</a>
+                    <a href="#">Điều khoản sử dụng</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- ==========================================
+       Modals
+       ========================================== -->
+    <!-- Modal 1: Hospital Telephone List (Hotline Modal) -->
+    <div class="modal-overlay" id="hotline-modal">
+        <div class="modal-wrapper">
+            <div class="modal-header">
+                <h3 class="modal-title">Hotline Hệ thống Vinmec</h3>
+                <button class="modal-close-btn" onclick="closeHotlineModal()" aria-label="Close Modal"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div class="modal-body">
+                <div class="hotline-list">
+                    <!-- Items -->
+                    <div class="hotline-item">
+                        <span class="hotline-name">Vinmec Times City (Hà Nội)</span>
+                        <a href="tel:02439743556" class="hotline-number">024 3974 3556</a>
+                    </div>
+                    <div class="hotline-item">
+                        <span class="hotline-name">Vinmec Central Park (TP. HCM)</span>
+                        <a href="tel:02836221166" class="hotline-number">028 3622 1166</a>
+                    </div>
+                    <div class="hotline-item">
+                        <span class="hotline-name">Vinmec Smart City (Hà Nội)</span>
+                        <a href="tel:02432085678" class="hotline-number">024 3208 5678</a>
+                    </div>
+                    <div class="hotline-item">
+                        <span class="hotline-name">Vinmec Đà Nẵng</span>
+                        <a href="tel:02363711111" class="hotline-number">023 6371 1111</a>
+                    </div>
+                    <div class="hotline-item">
+                        <span class="hotline-name">Vinmec Nha Trang</span>
+                        <a href="tel:02583900168" class="hotline-number">025 8390 0168</a>
+                    </div>
+                </div>
+
+                <div class="modal-footer-cta">
+                    <div class="modal-cta-box">
+                        <i class="fa-solid fa-mobile-screen-button modal-cta-icon"></i>
+                        <span class="modal-cta-title">Tải App MyVinmec</span>
+                        <a href="#" class="modal-cta-btn">Tải ngay</a>
+                    </div>
+                    <div class="modal-cta-box">
+                        <i class="fa-solid fa-headset modal-cta-icon"></i>
+                        <span class="modal-cta-title">Yêu cầu CSKH 24/7</span>
+                        <a href="#booking" onclick="closeHotlineModal()" class="modal-cta-btn">Gửi yêu cầu</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal 2: Success Message Alert -->
+    <div class="modal-overlay" id="success-modal">
+        <div class="modal-wrapper" style="max-width: 450px;">
+            <div class="modal-body text-center" style="padding: 40px 30px;">
+                <i class="fa-solid fa-circle-check" style="font-size: 4rem; color: var(--green); margin-bottom: 20px;"></i>
+                <h3 class="modal-title" style="color: var(--text-main); font-size: 1.5rem; margin-bottom: 10px;">Đăng ký thành công!</h3>
+                <p style="color: var(--text-muted); margin-bottom: 25px;" id="success-modal-message">Yêu cầu của bạn đã được ghi nhận. Tổng đài viên Vinmec sẽ liên hệ lại trong thời gian sớm nhất.</p>
+                <button onclick="closeSuccessModal()" class="viewmore-button" style="width:100%; border-radius: 8px;">Đóng</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==========================================
+       Sticky float buttons
+       ========================================== -->
+    <div class="sticky-cta-buttons">
+        <button class="float-btn float-top" onclick="window.scroll({top: 0, behavior: 'smooth'});" aria-label="Scroll to top">
+            <i class="fa-solid fa-arrow-up"></i>
+        </button>
+        <button class="float-btn float-call" onclick="openHotlineModal()" aria-label="Call hotline">
+            <i class="fa-solid fa-phone"></i>
+        </button>
+        <button class="float-btn float-chat" onclick="toggleChatbotWindow()" aria-label="Mở chatbot AI" style="background-color: var(--primary-blue);">
+            <i class="fa-solid fa-comments"></i>
+        </button>
+    </div>
+
+    <!-- ==========================================
+       AI Chatbot Window Widget
+       ========================================== -->
+    <div class="chatbot-window" id="chatbot-window">
+        <div class="chatbot-header">
+            <div class="chatbot-header-title">
+                <div class="chatbot-online-indicator"></div>
+                <span style="font-family: var(--font-heading); font-weight:700;">Trợ lý ảo Vinmec AI</span>
+            </div>
+            <div class="chatbot-header-actions">
+                <button class="chatbot-action-btn" onclick="toggleChatbotSettings()" title="Cài đặt API Key"><i class="fa-solid fa-gear"></i></button>
+                <button class="chatbot-action-btn" onclick="toggleChatbotWindow()" title="Đóng chat"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+        </div>
+        
+        <!-- Settings pane inside the Chatbot -->
+        <div class="chatbot-settings-pane" id="chatbot-settings-pane">
+            <h4 style="font-family: var(--font-heading); margin-bottom: 8px;">Cấu hình AI Gateway</h4>
+            <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 12px;">Nhập API Key từ <a href="https://ai-gateway.antco.ai/ui/?login=success" target="_blank" style="color: var(--primary-blue); text-decoration: underline;">AI Gateway</a> để chatbot trả lời câu hỏi y tế.</p>
+            
+            <div style="margin-bottom: 10px;">
+                <label style="display:block; font-size: 0.75rem; font-weight: 600; margin-bottom: 4px;">API Key:</label>
+                <input type="password" id="chatbot-api-key" placeholder="Nhập API Key..." style="width:100%; padding:8px 12px; border:1px solid var(--border-color); border-radius:6px; font-size: 0.85rem; background: #f8fafc;">
+            </div>
+            
+            <div style="margin-bottom: 10px;">
+                <label style="display:block; font-size: 0.75rem; font-weight: 600; margin-bottom: 4px;">API URL:</label>
+                <input type="text" id="chatbot-api-url" value="https://ai-gateway.antco.ai/v1/chat/completions" style="width:100%; padding:8px 12px; border:1px solid var(--border-color); border-radius:6px; font-size: 0.85rem; background: #f8fafc;">
+            </div>
+            
+            <div style="margin-bottom: 15px;">
+                <label style="display:block; font-size: 0.75rem; font-weight: 600; margin-bottom: 4px;">Model y khoa:</label>
+                <input type="text" id="chatbot-api-model" value="gpt-4o-mini" style="width:100%; padding:8px 12px; border:1px solid var(--border-color); border-radius:6px; font-size: 0.85rem; background: #f8fafc;">
+            </div>
+            
+            <button onclick="saveChatbotSettings()" style="width: 100%; background: var(--primary-blue); color: #fff; padding: 10px; border-radius: 8px; font-weight: 600; font-size: 0.85rem;">Lưu cấu hình</button>
+        </div>
+        
+        <div class="chatbot-messages" id="chatbot-messages">
+            <div class="chat-msg bot">
+                Xin chào! Tôi là Trợ lý ảo Vinmec AI. Tôi có thể giúp gì cho bạn hôm nay?
+            </div>
+            <div class="chat-msg bot help-msg" id="chatbot-setup-warning" style="display: none; background-color: #fffaf0; border: 1px solid #ffe3b3; color: #b7791f; font-size: 0.85rem; margin-top: 10px;">
+                ⚠️ <strong>Chưa cấu hình API Key:</strong> Vui lòng nhấp vào biểu tượng bánh răng ⚙️ ở trên để nhập API Key từ AI Gateway trước khi bắt đầu trò chuyện.
+            </div>
+        </div>
+        
+        <div class="chatbot-input-area">
+            <input type="text" id="chatbot-input" placeholder="Nhập câu hỏi..." onkeydown="if(event.key === 'Enter') sendChatMessage()">
+            <button class="chatbot-send-btn" onclick="sendChatMessage()" aria-label="Gửi tin nhắn">
+                <i class="fa-solid fa-paper-plane"></i>
+            </button>
+        </div>
+    </div>
+
+    <!-- Mobile HUD navigation bar (Visible only on phone viewports) -->
+    <div class="mobile-hud-bar">
+        <div class="mobile-hud-grid">
+            <a href="#" onclick="openHotlineModal(); return false;" class="mobile-hud-item">
+                <i class="fa-solid fa-phone"></i>
+                <span>Gọi Tổng Đài</span>
+            </a>
+            <a href="#booking" class="mobile-hud-item">
+                <i class="fa-regular fa-calendar-check"></i>
+                <span>Đặt Lịch Hẹn</span>
+            </a>
+            <a href="#" onclick="toggleChatbotWindow(); return false;" class="mobile-hud-item">
+                <i class="fa-solid fa-comments"></i>
+                <span>Trò chuyện AI</span>
+            </a>
+        </div>
+    </div>
+
+    <!-- Core Javascript -->
+    <script src="script.js"></script>
+</body>
+</html>

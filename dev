@@ -1,0 +1,37 @@
+#!/usr/bin/env node
+
+const { spawn } = require('child_process');
+const path = require('path');
+
+const FE_PORT = process.env.PORT || '3000';
+const BE_PORT = '3001';
+
+console.log('\x1b[36m%s\x1b[0m', '======================================================');
+console.log('\x1b[36m%s\x1b[0m', '🚀 Khởi động hệ thống Vinmec Health Platform...');
+console.log('\x1b[36m%s\x1b[0m', `   - Frontend (Next.js): http://localhost:${FE_PORT}`);
+console.log('\x1b[36m%s\x1b[0m', `   - Backend (server.js): http://localhost:${BE_PORT}`);
+console.log('\x1b[36m%s\x1b[0m', '======================================================\n');
+
+// Start Frontend (Next.js)
+const fe = spawn(process.platform === 'win32' ? 'npm.cmd' : 'npm', ['run', 'dev:fe'], {
+  env: { ...process.env, PORT: FE_PORT },
+  stdio: 'inherit',
+  shell: true
+});
+
+// Start Backend (server.js)
+const be = spawn('node', [path.join(__dirname, 'server.js')], {
+  env: { ...process.env, PORT: BE_PORT },
+  stdio: 'inherit',
+  shell: true
+});
+
+// Handle process termination
+const cleanup = () => {
+  fe.kill('SIGTERM');
+  be.kill('SIGTERM');
+  process.exit(0);
+};
+
+process.on('SIGINT', cleanup);
+process.on('SIGTERM', cleanup);

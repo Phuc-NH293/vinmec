@@ -1,0 +1,36 @@
+{
+  "name": "vinmec-health-platform",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "node dev",
+    "dev:fe": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "eslint ."
+  },
+  "dependencies": {
+    "@google/genai": "^2.9.0",
+    "@langchain/core": "^1.2.1",
+    "@langchain/langgraph": "^1.4.7",
+    "@neondatabase/serverless": "^1.1.0",
+    "lucide-react": "^0.468.0",
+    "mammoth": "^1.12.0",
+    "next": "16.2.9",
+    "pdf-parse": "^2.4.5",
+    "react": "19.2.7",
+    "react-dom": "19.2.7"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.2",
+    "@types/react": "^19.0.6",
+    "@types/react-dom": "^19.0.2",
+    "eslint": "^9.17.0",
+    "eslint-config-next": "16.2.9",
+    "postcss": "8.5.10",
+    "typescript": "^5.7.2"
+  },
+  "overrides": {
+    "postcss": "8.5.10"
+  }
+}

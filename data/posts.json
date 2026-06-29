@@ -1,0 +1,58 @@
+[
+  {
+    "id": "post-001",
+    "title": "7 dấu hiệu tim mạch không nên bỏ qua",
+    "slug": "7-dau-hieu-tim-mach-khong-nen-bo-qua",
+    "excerpt": "Nhận biết sớm những tín hiệu bất thường giúp người bệnh chủ động thăm khám và giảm nguy cơ biến chứng tim mạch.",
+    "content": "Tim mạch là nhóm bệnh có thể tiến triển âm thầm nhưng để lại hậu quả nghiêm trọng. Việc lắng nghe cơ thể và thăm khám đúng lúc đóng vai trò rất quan trọng.\n\n## Những dấu hiệu cần lưu ý\n\nĐau hoặc tức ngực, khó thở khi gắng sức, tim đập nhanh bất thường, chóng mặt, phù chân, mệt mỏi kéo dài và đau lan lên hàm hoặc cánh tay đều là những tín hiệu bạn không nên xem nhẹ.\n\n## Khi nào cần đi khám?\n\nNếu triệu chứng xuất hiện đột ngột, kéo dài hoặc tăng dần, hãy đến cơ sở y tế gần nhất. Người có tiền sử tăng huyết áp, đái tháo đường hoặc gia đình có bệnh tim mạch nên kiểm tra định kỳ.\n\nThông tin trong bài chỉ có tính chất tham khảo và không thay thế chẩn đoán của bác sĩ.",
+    "category": "Tim mạch",
+    "image": "/assets/images/banners/banner_cardiology.jpg",
+    "author": "BS. Nguyễn Minh Anh",
+    "status": "published",
+    "featured": true,
+    "publishedAt": "2026-06-18T08:00:00.000Z",
+    "updatedAt": "2026-06-18T08:00:00.000Z"
+  },
+  {
+    "id": "post-002",
+    "title": "Chăm sóc mẹ và bé trong 1.000 ngày đầu đời",
+    "slug": "cham-soc-me-va-be-trong-1000-ngay-dau-doi",
+    "excerpt": "Dinh dưỡng, giấc ngủ và theo dõi phát triển đúng cách tạo nền tảng sức khỏe bền vững cho trẻ.",
+    "content": "Một nghìn ngày đầu đời, tính từ khi mang thai đến lúc trẻ hai tuổi, là giai đoạn vàng cho sự phát triển thể chất và trí não.\n\n## Dinh dưỡng cân bằng\n\nMẹ cần duy trì chế độ ăn đa dạng, bổ sung vi chất theo hướng dẫn chuyên môn. Sau sinh, sữa mẹ là nguồn dinh dưỡng phù hợp nhất trong những tháng đầu nếu điều kiện cho phép.\n\n## Theo dõi sự phát triển\n\nTrẻ nên được tiêm chủng đúng lịch, theo dõi cân nặng, chiều cao và các mốc phát triển vận động - ngôn ngữ. Khi có dấu hiệu bất thường, cha mẹ nên trao đổi sớm với bác sĩ nhi khoa.",
+    "category": "Sản - Nhi",
+    "image": "/assets/images/banners/banner_maternity.jpg",
+    "author": "ThS.BS. Trần Thu Hà",
+    "status": "published",
+    "featured": true,
+    "publishedAt": "2026-06-15T08:00:00.000Z",
+    "updatedAt": "2026-06-15T08:00:00.000Z"
+  },
+  {
+    "id": "post-003",
+    "title": "Khám sức khỏe định kỳ: Đừng đợi có bệnh mới đi khám",
+    "slug": "kham-suc-khoe-dinh-ky-dung-doi-co-benh-moi-di-kham",
+    "excerpt": "Một lịch kiểm tra phù hợp theo tuổi và nguy cơ cá nhân giúp phát hiện sớm nhiều vấn đề sức khỏe.",
+    "content": "Khám sức khỏe định kỳ là cách chủ động theo dõi những thay đổi của cơ thể ngay cả khi chưa có triệu chứng rõ ràng.\n\n## Gói khám cần được cá nhân hóa\n\nDanh mục kiểm tra phụ thuộc vào tuổi, giới tính, lối sống, tiền sử gia đình và bệnh nền. Không phải càng nhiều xét nghiệm càng tốt; điều quan trọng là đúng chỉ định.\n\n## Chuẩn bị trước khi khám\n\nBạn nên mang theo hồ sơ y tế cũ, danh sách thuốc đang dùng và ghi lại những triệu chứng gần đây. Một số xét nghiệm yêu cầu nhịn ăn, vì vậy hãy xác nhận trước với cơ sở y tế.",
+    "category": "Sống khỏe",
+    "image": "/assets/images/clinics/clinic_times_city.jpg",
+    "author": "Vinmec",
+    "status": "published",
+    "featured": false,
+    "publishedAt": "2026-06-10T08:00:00.000Z",
+    "updatedAt": "2026-06-10T08:00:00.000Z"
+  },
+  {
+    "id": "post-004",
+    "title": "Ứng dụng AI hỗ trợ sàng lọc hình ảnh y khoa",
+    "slug": "ung-dung-ai-ho-tro-sang-loc-hinh-anh-y-khoa",
+    "excerpt": "Bản nháp nội bộ về hướng ứng dụng trí tuệ nhân tạo trong quy trình hỗ trợ bác sĩ.",
+    "content": "Bài viết đang được biên tập.",
+    "category": "Công nghệ y tế",
+    "image": "/assets/images/banners/banner_main.jpg",
+    "author": "Ban biên tập",
+    "status": "draft",
+    "featured": false,
+    "publishedAt": null,
+    "updatedAt": "2026-06-21T08:00:00.000Z"
+  }
+]
