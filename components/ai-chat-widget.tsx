@@ -30,27 +30,20 @@ import {
   Stethoscope,
   X,
 } from "lucide-react";
-
-type HospitalLocation = {
-  name: string;
-  facility: string;
-  label: string;
-  address: string;
-  lat: number;
-  lon: number;
-};
-
-type NearestHospital = HospitalLocation & {
-  distanceKm: number;
-};
+import { vinmecFacilities } from "@/lib/agent/tools/facilities";
+import type {
+  AgentAction,
+  AgentLocation,
+  AgentNearestFacility,
+} from "@/lib/agent/types";
 
 type ChatAction =
-  | { type: "emergency" }
-  | { type: "booking" }
+  | AgentAction
   | {
       type: "nearby";
-      status: "idle" | "loading" | "ready" | "error";
-      hospital?: NearestHospital;
+      status: "loading";
+      locationQuery?: string;
+      hospital?: AgentNearestFacility;
       error?: string;
     };
 
@@ -65,69 +58,20 @@ type Message = {
   action?: ChatAction;
 };
 
+type AgentChatResult = {
+  answer?: string;
+  error?: string;
+  action?: AgentAction;
+  confidence?: number;
+  confidenceLabel?: string;
+  confidenceReason?: string;
+  followUpQuestion?: string;
+};
+
 const quickQuestions = [
   "Tôi muốn đặt lịch khám",
   "Tôi muốn đi khám ở bệnh viện gần nhất",
   "Đau ngực khó thở phải làm gì?",
-];
-
-const hospitalLocations: HospitalLocation[] = [
-  {
-    name: "Times City",
-    facility: "Bệnh viện ĐKQT Vinmec Times City",
-    label: "Vinmec Times City (Hà Nội)",
-    address: "458 Minh Khai, Hai Bà Trưng, Hà Nội",
-    lat: 20.9964,
-    lon: 105.8669,
-  },
-  {
-    name: "Central Park",
-    facility: "Bệnh viện ĐKQT Vinmec Central Park",
-    label: "Vinmec Central Park (TP. HCM)",
-    address: "208 Nguyễn Hữu Cảnh, Bình Thạnh, TP. HCM",
-    lat: 10.7948,
-    lon: 106.7203,
-  },
-  {
-    name: "Smart City",
-    facility: "Bệnh viện ĐKQT Vinmec Smart City",
-    label: "Vinmec Smart City (Hà Nội)",
-    address: "Vinhomes Smart City, Nam Từ Liêm, Hà Nội",
-    lat: 21.0077,
-    lon: 105.7473,
-  },
-  {
-    name: "Da Nang",
-    facility: "Bệnh viện ĐKQT Vinmec Đà Nẵng",
-    label: "Vinmec Đà Nẵng",
-    address: "30 Tháng 4, Hải Châu, Đà Nẵng",
-    lat: 16.0391,
-    lon: 108.2112,
-  },
-  {
-    name: "Nha Trang",
-    facility: "Bệnh viện ĐKQT Vinmec Nha Trang",
-    label: "Vinmec Nha Trang",
-    address: "42A Trần Phú, Nha Trang, Khánh Hòa",
-    lat: 12.2129,
-    lon: 109.2107,
-  },
-  {
-    name: "Hai Phong",
-    facility: "Bệnh viện ĐKQT Vinmec Hải Phòng",
-    label: "Vinmec Hải Phòng",
-    address: "Vinhomes Imperia, Hồng Bàng, Hải Phòng",
-    lat: 20.8234,
-    lon: 106.6879,
-  },
-  {
-    name: "Royal City",
-    facility: "Phòng khám ĐKQT Vinmec Royal City",
-    label: "Vinmec Royal City (Hà Nội)",
-    address: "72A Nguyễn Trãi, Thanh Xuân, Hà Nội",
-    lat: 21.0029,
-    lon: 105.8156,
-  },
 ];
 
 const bookingSpecialties = [
@@ -153,92 +97,11 @@ const bookingTimes = [
   "15:00 - 15:30",
 ];
 
-function normalizeText(value: string) {
-  return value
-    .toLocaleLowerCase("vi")
-    .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "")
-    .replace(/đ/g, "d");
-}
+let messageSequence = 1;
 
-function detectAction(message: string): ChatAction["type"] | null {
-  const normalized = normalizeText(message);
-  const emergencyPatterns = [
-    "cap cuu",
-    "goi 115",
-    "kho tho",
-    "ngat",
-    "hon me",
-    "mat y thuc",
-    "dau nguc",
-    "dau that nguc",
-    "dot quy",
-    "meo mieng",
-    "yeu liet",
-    "co giat",
-    "soc phan ve",
-    "chay mau khong cam",
-    "tu tu",
-  ];
-  if (emergencyPatterns.some((item) => normalized.includes(item))) {
-    return "emergency";
-  }
-
-  const nearbyPatterns = [
-    "muon di kham",
-    "di kham o dau",
-    "benh vien gan",
-    "co so gan",
-    "gan nhat",
-    "gan toi",
-    "lay vi tri",
-    "vi tri hien tai",
-  ];
-  if (nearbyPatterns.some((item) => normalized.includes(item))) {
-    return "nearby";
-  }
-
-  const bookingPatterns = [
-    "dat lich",
-    "dang ky kham",
-    "hen kham",
-    "lich kham",
-    "dat hen",
-  ];
-  if (bookingPatterns.some((item) => normalized.includes(item))) {
-    return "booking";
-  }
-
-  return null;
-}
-
-function distanceInKm(
-  first: { lat: number; lon: number },
-  second: { lat: number; lon: number },
-) {
-  const radius = 6371;
-  const toRadians = (degree: number) => (degree * Math.PI) / 180;
-  const dLat = toRadians(second.lat - first.lat);
-  const dLon = toRadians(second.lon - first.lon);
-  const lat1 = toRadians(first.lat);
-  const lat2 = toRadians(second.lat);
-  const a =
-    Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-    Math.cos(lat1) *
-      Math.cos(lat2) *
-      Math.sin(dLon / 2) *
-      Math.sin(dLon / 2);
-  return radius * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-}
-
-function findNearestHospital(lat: number, lon: number) {
-  return hospitalLocations.reduce<NearestHospital | null>((nearest, item) => {
-    const distanceKm = distanceInKm({ lat, lon }, item);
-    if (!nearest || distanceKm < nearest.distanceKm) {
-      return { ...item, distanceKm };
-    }
-    return nearest;
-  }, null);
+function createMessageId() {
+  messageSequence += 1;
+  return messageSequence;
 }
 
 function localDate(date: Date) {
@@ -254,12 +117,17 @@ function nextBookingDates() {
   });
 }
 
-function createAssistantMessage(content: string, action?: ChatAction): Message {
+function createAssistantMessage(
+  content: string,
+  action?: ChatAction,
+  extra?: Partial<Message>,
+): Message {
   return {
-    id: Date.now() + 1 + Math.floor(Math.random() * 1000),
+    id: createMessageId(),
     role: "assistant",
     content,
     action,
+    ...extra,
   };
 }
 
@@ -358,7 +226,7 @@ function BookingActionForm({
           <option value="" disabled>
             Chọn cơ sở
           </option>
-          {hospitalLocations.map((item) => (
+          {vinmecFacilities.map((item) => (
             <option value={item.facility} key={item.name}>
               {item.facility}
             </option>
@@ -431,7 +299,7 @@ function MessageAction({
   onRequestLocation,
 }: {
   message: Message;
-  onRequestLocation: (messageId: number) => void;
+  onRequestLocation: (message: Message) => void;
 }) {
   const action = message.action;
   if (!action) return null;
@@ -468,7 +336,7 @@ function MessageAction({
           <button
             className="ai-action-primary"
             type="button"
-            onClick={() => onRequestLocation(message.id)}
+            onClick={() => onRequestLocation(message)}
           >
             <LocateFixed size={15} /> Dùng vị trí hiện tại
           </button>
@@ -526,7 +394,7 @@ export function AiChatWidget() {
       id: 1,
       role: "assistant",
       content:
-        "Xin chào! Tôi là trợ lý AI Vinmec. Tôi có thể hỗ trợ thông tin sức khỏe, tìm bác sĩ, gợi ý cơ sở gần bạn hoặc mở form đặt lịch khám.",
+        "Xin chào! Tôi là agent AI Vinmec. Tôi có thể hỗ trợ thông tin sức khỏe, tìm bác sĩ, gợi ý cơ sở gần bạn hoặc mở form đặt lịch khám.",
     },
   ]);
   const messageEndRef = useRef<HTMLDivElement>(null);
@@ -537,17 +405,47 @@ export function AiChatWidget() {
 
   if (pathname.startsWith("/admin")) return null;
 
-  function updateNearbyAction(messageId: number, action: ChatAction) {
+  function buildHistory(items = messages) {
+    return items.map(({ role, content, followUpQuestion }) => ({
+      role,
+      content: followUpQuestion
+        ? `${content}\n\nCâu hỏi thêm: ${followUpQuestion}`
+        : content,
+    }));
+  }
+
+  async function callAgent(
+    message: string,
+    options: {
+      location?: AgentLocation;
+      history?: ReturnType<typeof buildHistory>;
+    } = {},
+  ) {
+    const response = await fetch("/api/agent/chat", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        message,
+        history: options.history ?? buildHistory(),
+        location: options.location,
+      }),
+    });
+    return (await response.json()) as AgentChatResult;
+  }
+
+  function updateMessage(messageId: number, patch: Partial<Message>) {
     setMessages((items) =>
-      items.map((item) =>
-        item.id === messageId ? { ...item, action } : item,
-      ),
+      items.map((item) => (item.id === messageId ? { ...item, ...patch } : item)),
     );
   }
 
-  function requestLocation(messageId: number) {
+  function updateNearbyAction(messageId: number, action: ChatAction) {
+    updateMessage(messageId, { action });
+  }
+
+  function requestLocation(message: Message) {
     if (!navigator.geolocation) {
-      updateNearbyAction(messageId, {
+      updateNearbyAction(message.id, {
         type: "nearby",
         status: "error",
         error: "Trình duyệt của bạn không hỗ trợ định vị.",
@@ -555,29 +453,47 @@ export function AiChatWidget() {
       return;
     }
 
-    updateNearbyAction(messageId, { type: "nearby", status: "loading" });
+    const query =
+      message.action?.type === "nearby" && "locationQuery" in message.action
+        ? message.action.locationQuery || message.content
+        : message.content;
+
+    updateNearbyAction(message.id, {
+      type: "nearby",
+      status: "loading",
+      locationQuery: query,
+    });
+
     navigator.geolocation.getCurrentPosition(
-      (position) => {
-        const nearest = findNearestHospital(
-          position.coords.latitude,
-          position.coords.longitude,
-        );
-        if (!nearest) {
-          updateNearbyAction(messageId, {
+      async (position) => {
+        try {
+          const result = await callAgent(query, {
+            location: {
+              lat: position.coords.latitude,
+              lon: position.coords.longitude,
+            },
+          });
+          updateMessage(message.id, {
+            content:
+              result.answer ||
+              result.error ||
+              "Agent chưa thể tìm cơ sở phù hợp lúc này.",
+            action: result.action,
+            confidence: result.confidence,
+            confidenceLabel: result.confidenceLabel,
+            confidenceReason: result.confidenceReason,
+            followUpQuestion: result.followUpQuestion,
+          });
+        } catch {
+          updateNearbyAction(message.id, {
             type: "nearby",
             status: "error",
-            error: "Chưa tìm được cơ sở Vinmec phù hợp.",
+            error: "Không thể gửi vị trí tới agent. Vui lòng thử lại.",
           });
-          return;
         }
-        updateNearbyAction(messageId, {
-          type: "nearby",
-          status: "ready",
-          hospital: nearest,
-        });
       },
       () => {
-        updateNearbyAction(messageId, {
+        updateNearbyAction(message.id, {
           type: "nearby",
           status: "error",
           error:
@@ -591,83 +507,41 @@ export function AiChatWidget() {
   async function sendMessage(value: string) {
     const message = value.trim();
     if (!message || typing) return;
-    const history = messages.map(({ role, content, followUpQuestion }) => ({
-      role,
-      content: followUpQuestion
-        ? `${content}\n\nCâu hỏi thêm: ${followUpQuestion}`
-        : content,
-    }));
-    const actionType = detectAction(message);
-    setMessages((items) => [
-      ...items,
-      { id: Date.now(), role: "user", content: message },
-    ]);
+    const userMessage: Message = {
+      id: createMessageId(),
+      role: "user",
+      content: message,
+    };
+    const history = buildHistory([...messages, userMessage]);
+    setMessages((items) => [...items, userMessage]);
     setInput("");
-
-    if (actionType === "emergency") {
-      setMessages((items) => [
-        ...items,
-        createAssistantMessage(
-          "Nếu bạn đang có triệu chứng nghiêm trọng như đau ngực, khó thở, ngất, co giật, dấu hiệu đột quỵ hoặc chảy máu không cầm, hãy gọi cấp cứu 115 ngay hoặc đến cơ sở y tế gần nhất. Chatbot không thay thế xử trí cấp cứu.",
-          { type: "emergency" },
-        ),
-      ]);
-      return;
-    }
-
-    if (actionType === "booking") {
-      setMessages((items) => [
-        ...items,
-        createAssistantMessage(
-          "Mình mở form đặt lịch nhanh ngay tại đây. Bạn điền thông tin, Vinmec sẽ liên hệ xác nhận lịch khám.",
-          { type: "booking" },
-        ),
-      ]);
-      return;
-    }
-
-    if (actionType === "nearby") {
-      setMessages((items) => [
-        ...items,
-        createAssistantMessage(
-          "Mình có thể dùng vị trí hiện tại để gợi ý cơ sở Vinmec gần bạn nhất. Trình duyệt sẽ hỏi quyền vị trí trước khi lấy tọa độ.",
-          { type: "nearby", status: "idle" },
-        ),
-      ]);
-      return;
-    }
-
     setTyping(true);
+
     try {
-      const response = await fetch("/api/ai/chat", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ message, history }),
-      });
-      const result = await response.json();
+      const result = await callAgent(message, { history });
       setMessages((items) => [
         ...items,
-        {
-          id: Date.now() + 1,
-          role: "assistant",
-          content:
-            result.answer ||
+        createAssistantMessage(
+          result.answer ||
             result.error ||
-            "Trợ lý AI chưa thể phản hồi lúc này.",
-          confidence: result.confidence,
-          confidenceLabel: result.confidenceLabel,
-          confidenceReason: result.confidenceReason,
-          followUpQuestion: result.followUpQuestion,
-        },
+            "Agent AI chưa thể phản hồi lúc này.",
+          result.action,
+          {
+            confidence: result.confidence,
+            confidenceLabel: result.confidenceLabel,
+            confidenceReason: result.confidenceReason,
+            followUpQuestion: result.followUpQuestion,
+          },
+        ),
       ]);
     } catch {
       setMessages((items) => [
         ...items,
         {
-          id: Date.now() + 1,
+          id: createMessageId(),
           role: "assistant",
           content:
-            "Không thể kết nối tới dịch vụ AI. Vui lòng thử lại sau hoặc gọi tổng đài 1900 232 389.",
+            "Không thể kết nối tới agent AI. Vui lòng thử lại sau hoặc gọi tổng đài 1900 232 389.",
         },
       ]);
     } finally {
@@ -683,16 +557,16 @@ export function AiChatWidget() {
   return (
     <div className={`ai-widget ${open ? "is-open" : ""}`}>
       {open && (
-        <section className="ai-chat-panel" aria-label="Trợ lý AI Vinmec">
+        <section className="ai-chat-panel" aria-label="Agent AI Vinmec">
           <header className="ai-chat-header">
             <div className="ai-chat-avatar">
               <Bot />
               <span />
             </div>
             <div>
-              <strong>Trợ lý AI Vinmec</strong>
+              <strong>Agent AI Vinmec</strong>
               <span>
-                <i /> Gemini + kho tri thức
+                <i /> Agent + Gemini + tool y tế
               </span>
             </div>
             <button
@@ -706,8 +580,8 @@ export function AiChatWidget() {
 
           <div className="ai-chat-notice">
             <Sparkles size={14} />
-            Chỉ hỗ trợ chủ đề y tế và Vinmec. Nếu có dấu hiệu khẩn cấp, hãy gọi
-            115 ngay.
+            Agent chỉ hỗ trợ chủ đề y tế và Vinmec. Nếu có dấu hiệu khẩn cấp,
+            hãy gọi 115 ngay.
           </div>
 
           <div className="ai-chat-messages">
@@ -729,7 +603,7 @@ export function AiChatWidget() {
                   {message.role === "assistant" &&
                     message.followUpQuestion && (
                       <div className="ai-follow-up">
-                        <strong>Gemini hỏi thêm</strong>
+                        <strong>Agent hỏi thêm</strong>
                         <span>{message.followUpQuestion}</span>
                       </div>
                     )}
@@ -738,7 +612,7 @@ export function AiChatWidget() {
                     message.confidence > 0 && (
                       <div
                         className="ai-confidence"
-                        title="Gemini đọc lại câu trả lời và tự chấm theo bằng chứng; đây không phải xác suất chẩn đoán."
+                        title="Agent đọc lại câu trả lời và tự chấm theo bằng chứng; đây không phải xác suất chẩn đoán."
                       >
                         <span
                           className="ai-confidence-ring"
@@ -811,7 +685,7 @@ export function AiChatWidget() {
             <input
               value={input}
               onChange={(event) => setInput(event.target.value)}
-              placeholder="Hỏi Gemini hoặc nhập nhu cầu khám..."
+              placeholder="Hỏi agent hoặc nhập nhu cầu khám..."
               aria-label="Nhập tin nhắn"
             />
             <button
@@ -830,14 +704,14 @@ export function AiChatWidget() {
           type="button"
           className="ai-chat-launcher"
           onClick={() => setOpen(true)}
-          aria-label="Chat với AI Vinmec"
+          aria-label="Chat với Agent AI Vinmec"
         >
           <span className="ai-launcher-avatar">
             <Bot />
             <i />
           </span>
           <span className="ai-launcher-copy">
-            <small>Powered by Gemini</small>
+            <small>Agent + Gemini</small>
             <strong>Chat với AI Vinmec</strong>
           </span>
           <MessageCircle className="ai-launcher-chat-icon" />
