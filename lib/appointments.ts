@@ -109,12 +109,23 @@ function createBookingCode() {
   return `VM-${date}-${suffix}`;
 }
 
+function getDatabaseUrl() {
+  return (
+    process.env.DATABASE_URL ||
+    process.env.POSTGRES_URL ||
+    process.env.POSTGRES_PRISMA_URL ||
+    process.env.DATABASE_URL_UNPOOLED ||
+    process.env.POSTGRES_URL_NON_POOLING ||
+    ""
+  ).trim();
+}
+
 function hasDatabaseUrl() {
-  return Boolean(process.env.DATABASE_URL?.trim());
+  return Boolean(getDatabaseUrl());
 }
 
 function getDatabase() {
-  const databaseUrl = process.env.DATABASE_URL?.trim();
+  const databaseUrl = getDatabaseUrl();
   if (!databaseUrl) throw new Error("DATABASE_URL_NOT_CONFIGURED");
   return neon(databaseUrl);
 }
