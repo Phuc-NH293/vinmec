@@ -25,6 +25,16 @@ function bookingResponse(): AgentResponse {
   };
 }
 
+function unsafeMedicalRequestResponse(): AgentResponse {
+  return {
+    answer:
+      "Mình không thể chẩn đoán bệnh, kê đơn, đưa phác đồ điều trị hoặc liều dùng thuốc ngay trong chat. Mình có thể giúp bạn mô tả triệu chứng, nhận diện dấu hiệu cần đi khám/cấp cứu, gợi ý chuyên khoa phù hợp và hỗ trợ đặt lịch với bác sĩ Vinmec.",
+    source: "agent:medical_safety_guard",
+    sources: [],
+    action: { type: "booking" },
+  };
+}
+
 function requestLocationResponse(message: string): AgentResponse {
   return {
     answer:
@@ -87,6 +97,9 @@ export async function runVinmecAgent(
 
   const intent = classifyAgentIntent(message);
   if (intent === "emergency") return emergencyResponse();
+  if (intent === "unsafe_medical_request") {
+    return unsafeMedicalRequestResponse();
+  }
   if (intent === "booking") return bookingResponse();
   if (intent === "nearby") return requestLocationResponse(message);
 

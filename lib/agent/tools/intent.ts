@@ -1,4 +1,9 @@
-export type AgentIntent = "emergency" | "booking" | "nearby" | "general";
+export type AgentIntent =
+  | "emergency"
+  | "unsafe_medical_request"
+  | "booking"
+  | "nearby"
+  | "general";
 
 export function normalizeAgentText(value: string) {
   return value
@@ -35,6 +40,27 @@ export function classifyAgentIntent(message: string): AgentIntent {
     ])
   ) {
     return "emergency";
+  }
+
+  if (
+    includesAny(normalized, [
+      "chan doan benh",
+      "chan doan cho toi",
+      "dua ra phuong thuoc",
+      "dua phuong thuoc",
+      "ke don",
+      "ke toa",
+      "toa thuoc",
+      "phac do thuoc",
+      "phac do dieu tri",
+      "cho toi thuoc",
+      "uong thuoc gi",
+      "dung thuoc gi",
+      "lieu luong",
+      "tu dieu tri",
+    ])
+  ) {
+    return "unsafe_medical_request";
   }
 
   if (
