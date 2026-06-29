@@ -1,7 +1,5 @@
 import { promises as fs } from "fs";
 import path from "path";
-import { PDFParse } from "pdf-parse";
-import mammoth from "mammoth";
 import type {
   KnowledgeDocument,
   KnowledgeMatch,
@@ -59,10 +57,12 @@ async function extractText(buffer: Buffer, extension: string) {
     return buffer.toString("utf8");
   }
   if (extension === ".docx") {
+    const mammoth = await import("mammoth");
     const result = await mammoth.extractRawText({ buffer });
     return result.value;
   }
   if (extension === ".pdf") {
+    const { PDFParse } = await import("pdf-parse");
     const parser = new PDFParse({ data: buffer });
     try {
       const result = await parser.getText();
