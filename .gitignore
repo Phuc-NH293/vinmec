@@ -5,3 +5,5 @@ node_modules
 npm-debug.log*
 data/ai/uploads/*
 !data/ai/uploads/.gitkeep
+
+.vercel
